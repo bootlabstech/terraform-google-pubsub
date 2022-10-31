@@ -14,8 +14,8 @@ variable "schema_type" {
 
 }
 variable "schema_definition" {
-     type = string
-     description = "The definition of the schema. This should contain a string representing the full definition of the schema that is a valid schema definition of the type specified in type."
+  type        = string
+  description = "The definition of the schema. This should contain a string representing the full definition of the schema that is a valid schema definition of the type specified in type."
 
 }
 variable "topic_name" {

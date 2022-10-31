@@ -39,18 +39,18 @@ resource "google_pubsub_subscription" "subscription" {
     ttl = "605000s"
   }
   ack_deadline_seconds         = var.ack_deadline_seconds
-  enable_exactly_once_delivery = var.enable_exactly_once_delivery
+  #enable_exactly_once_delivery = var.enable_exactly_once_delivery
   enable_message_ordering      = var.enable_message_ordering
 
-  dynamic "bigquery_config" {
-    for_each = var.bigquery_config ? [{}] : []
-    content {
-      table               = var.table
-      use_topic_schema    = var.use_topic_schema
-      write_metadata      = var.write_metadata
-      drop_unknown_fields = var.drop_unknown_fields
-    }
-  }
+  # dynamic "bigquery_config" {
+  #   for_each = var.bigquery_config ? [{}] : []
+  #   content {
+  #     table               = var.table
+  #     use_topic_schema    = var.use_topic_schema
+  #     write_metadata      = var.write_metadata
+  #     drop_unknown_fields = var.drop_unknown_fields
+  #   }
+  # }
 
   dynamic "push_config" {
     for_each = var.push_config ? [{}] : []
