@@ -19,7 +19,7 @@ variable "schema_definition" {
 
 }
 variable "topic_name" {
-  type        = string
+  type        = list(string)
   description = "The Pub/Sub topic name."
 
 }
@@ -41,8 +41,8 @@ variable "schema_settings" {
 
 }
 variable "subscription_name" {
-  type        = string
-  description = "The name of the pubsub subscription"
+  type        = list(string)
+  description = "The name of the PubSub subscriptions"
 
 }
 variable "message_retention_duration" {
@@ -98,3 +98,12 @@ variable "ttl" {
   description = "A policy that specifies the retry limit in this subscription."
   default     = false
 }
+variable "no_of_topics" {
+  type        = number
+  description = "The number of topics to be created."
+}
+variable "no_of_subscriptions" {
+  type        = number
+  description = "The number of subscriptions to be created."
+}
+

@@ -6,9 +6,10 @@ resource "google_pubsub_schema" "schema" {
 }
 
 resource "google_pubsub_topic" "topic" {
-  project = var.project_id
-  # kms_key_name               = var.kms_key_name
-  name                       = var.topic_name
+  count                      = var.no_of_topics
+  project                    = var.project_id
+  #kms_key_name               = var.kms_key_name
+  name                       = var.topic_name[count.index]
   message_retention_duration = var.topic_message_retention_duration
   dynamic "schema_settings" {
     for_each = var.schema_settings ? [{}] : []
@@ -29,9 +30,11 @@ resource "google_pubsub_topic" "topic" {
 }
 
 resource "google_pubsub_subscription" "subscription" {
+  depends_on = [google_pubsub_topic.topic]
+  count                      = var.no_of_subscriptions
   project                    = var.project_id
-  name                       = var.subscription_name
-  topic                      = google_pubsub_topic.topic.name
+  name                       = var.subscription_name[count.index]
+  topic                      = var.topic_name[count.index]
   message_retention_duration = var.message_retention_duration
   retain_acked_messages      = var.retain_acked_messages
 
