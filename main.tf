@@ -27,6 +27,13 @@ resource "google_pubsub_topic" "topic" {
   }
 
   depends_on = [google_pubsub_schema.schema]
+  lifecycle {
+     ignore_changes = [
+# Ignore changes to tags, e.g. because a management agent
+# updates these based on some ruleset managed elsewhere.
+          labels,
+ ]
+ }
 }
 
 resource "google_pubsub_subscription" "subscription" {
@@ -79,4 +86,12 @@ resource "google_pubsub_subscription" "subscription" {
     }
 
   }
+    lifecycle {
+     ignore_changes = [
+# Ignore changes to tags, e.g. because a management agent
+# updates these based on some ruleset managed elsewhere.
+          labels,
+ ]
+ }
+
 }
