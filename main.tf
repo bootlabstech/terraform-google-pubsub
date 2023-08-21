@@ -6,8 +6,8 @@ resource "google_pubsub_schema" "schema" {
 }
 
 resource "google_pubsub_topic" "topic" {
-  count                      = var.no_of_topics
-  project                    = var.project_id
+  count   = var.no_of_topics
+  project = var.project_id
   #kms_key_name               = var.kms_key_name
   name                       = var.topic_name[count.index]
   message_retention_duration = var.topic_message_retention_duration
@@ -28,16 +28,16 @@ resource "google_pubsub_topic" "topic" {
 
   depends_on = [google_pubsub_schema.schema]
   lifecycle {
-     ignore_changes = [
-# Ignore changes to tags, e.g. because a management agent
-# updates these based on some ruleset managed elsewhere.
-          labels,
- ]
- }
+    ignore_changes = [
+      # Ignore changes to tags, e.g. because a management agent
+      # updates these based on some ruleset managed elsewhere.
+      labels,
+    ]
+  }
 }
 
 resource "google_pubsub_subscription" "subscription" {
-  depends_on = [google_pubsub_topic.topic]
+  depends_on                 = [google_pubsub_topic.topic]
   count                      = var.no_of_subscriptions
   project                    = var.project_id
   name                       = var.subscription_name[count.index]
@@ -48,9 +48,9 @@ resource "google_pubsub_subscription" "subscription" {
   expiration_policy {
     ttl = "605000s"
   }
-  ack_deadline_seconds         = var.ack_deadline_seconds
+  ack_deadline_seconds = var.ack_deadline_seconds
   #enable_exactly_once_delivery = var.enable_exactly_once_delivery
-  enable_message_ordering      = var.enable_message_ordering
+  enable_message_ordering = var.enable_message_ordering
 
   # dynamic "bigquery_config" {
   #   for_each = var.bigquery_config ? [{}] : []
@@ -86,12 +86,12 @@ resource "google_pubsub_subscription" "subscription" {
     }
 
   }
-    lifecycle {
-     ignore_changes = [
-# Ignore changes to tags, e.g. because a management agent
-# updates these based on some ruleset managed elsewhere.
-          labels,
- ]
- }
+  lifecycle {
+    ignore_changes = [
+      # Ignore changes to tags, e.g. because a management agent
+      # updates these based on some ruleset managed elsewhere.
+      labels,
+    ]
+  }
 
 }
