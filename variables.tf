@@ -3,7 +3,7 @@ variable "project_id" {
   description = "The project in which the pubsub resource is created in"
 
 }
-variable "schema_name" {
+variable "name" {
   type        = string
   description = "The ID to use for the schema, which will become the final component of the schema's resource name."
 
@@ -73,14 +73,9 @@ variable "enable_message_ordering" {
   description = "Indicates if messages are delivered in the order they are sent."
   default     = false
 }
-variable "bigquery_config" {
-  type        = string
-  description = "If delivery to BigQuery is used with this subscription, this field is used to configure it."
-  default     = false
-}
 variable "push_config" {
   type        = string
-  description = "If push delivery is used with this subscription, this field is used to configure it.."
+  description = "If push delivery is used with this suretry_policyscription, this field is used to configure it.."
   default     = false
 }
 variable "dead_letter_policy" {
@@ -105,5 +100,27 @@ variable "no_of_topics" {
 variable "no_of_subscriptions" {
   type        = number
   description = "The number of subscriptions to be created."
+}
+variable "kms_key_name" {
+  type=string
+  description = "kms key for en and decr"
+  
+}
+variable "encoding" {
+  type = string
+  description = "encoding"
+  default = "JSON"
+  
+}
+variable "region" {
+  type=list(string)
+  description = "region for pub/sub"
+  
+}
+variable "bigquery_config" {
+  type=string
+  description = "bigquery setup with pub/sub"
+  default = "false"
+  
 }
 

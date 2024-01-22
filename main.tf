@@ -1,6 +1,6 @@
 resource "google_pubsub_schema" "schema" {
   project    = var.project_id
-  name       = var.schema_name
+  name       = var.name
   type       = var.schema_type
   definition = var.schema_definition
 }
@@ -8,6 +8,7 @@ resource "google_pubsub_schema" "schema" {
 resource "google_pubsub_topic" "topic" {
   count   = var.no_of_topics
   project = var.project_id
+  kms_key_name = var.kms_key_name
   #kms_key_name               = var.kms_key_name
   name                       = var.topic_name[count.index]
   message_retention_duration = var.topic_message_retention_duration
@@ -22,7 +23,7 @@ resource "google_pubsub_topic" "topic" {
   dynamic "message_storage_policy" {
     for_each = var.message_storage_policy ? [{}] : []
     content {
-      allowed_persistence_regions = var.allowed_persistence_regions
+      allowed_persistence_regions = var.region
     }
   }
 
@@ -73,19 +74,20 @@ resource "google_pubsub_subscription" "subscription" {
   dynamic "dead_letter_policy" {
     for_each = var.dead_letter_policy ? [{}] : []
     content {
-      dead_letter_topic     = var.dead_letter_topic
-      max_delivery_attempts = var.max_delivery_attempts
+      dead_letter_topic     = google_pubsub_topic.topic.id
+      max_delivery_attempts = 10
     }
   }
 
   dynamic "retry_policy" {
     for_each = var.retry_policy ? [{}] : []
     content {
-      minimum_backoff = var.minimum_backoff
-      maximum_backoff = var.maximum_backoff
+      minimum_backoff = "10s"
+      maximum_backoff = "100s"
     }
-
   }
+
+  
   lifecycle {
     ignore_changes = [
       # Ignore changes to tags, e.g. because a management agent
