@@ -46,7 +46,7 @@ resource "google_pubsub_subscription" "subscription" {
   retain_acked_messages      = var.retain_acked_messages
 
   expiration_policy {
-    ttl = "605000s"
+    ttl = "2678400s"
   }
   ack_deadline_seconds = var.ack_deadline_seconds
   #enable_exactly_once_delivery = var.enable_exactly_once_delivery
